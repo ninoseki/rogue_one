@@ -14,12 +14,11 @@ module RogueOne
     end
 
     def report
-      inspect
+      @report ||= [].tap do |out|
+        inspect
 
-      {
-        verdict: verdict,
-        landing_pages: landing_pages
-      }
+        out << { verdict: verdict, landing_pages: landing_pages }
+      end.first
     end
 
     private
