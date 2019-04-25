@@ -11,7 +11,6 @@ module RogueOne
     def initialize(target:)
       @target = target
       @memo = Hash.new(0)
-      @mismatched_domains = []
     end
 
     def report
@@ -30,12 +29,10 @@ module RogueOne
     end
 
     def rogue_one?
-      @mismatched_domains.length > 50
+      !landing_pages.empty?
     end
 
     def landing_pages
-      return [] unless rogue_one?
-
       @memo.map do |ip, count|
         count > 10 ? ip : nil
       end.compact
@@ -47,7 +44,6 @@ module RogueOne
         target_result = target_resolver.dig(domain, "A")
 
         if normal_result != target_result
-          @mismatched_domains << domain
           @memo[target_result] += 1 if target_result
         end
       end

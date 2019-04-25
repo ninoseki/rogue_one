@@ -19,7 +19,7 @@ Commands:
 
 $ rogue_one report 1.1.1.1
 {
-  "verdict": "rogue one",
+  "verdict": "benign one",
   "landing_pages": [
 
   ]
@@ -29,12 +29,21 @@ $ rogue_one reprot 1.53.252.215
 {
   "verdict": "rogue one",
   "landing_pages": [
-    "1.171.170.228",
     "1.171.168.19",
+    "1.171.170.228",
     "61.230.102.66"
   ]
 }
 ```
+
+| Key           | Desc.                                            |
+|---------------|--------------------------------------------------|
+| verdict       | A detection result (`rogue one` or `benign one`) |
+| landing_pages | An array of IP of landing pages                  |
+
+## Notes
+
+- This is just a PoC tool. I cannot guarantee the results with high confidence at the moment.
 
 ## License
 
