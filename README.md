@@ -25,7 +25,7 @@ $ rogue_one report 1.1.1.1
   ]
 }
 
-$ rogue_one reprot 1.53.252.215
+$ rogue_one report 1.53.252.215
 {
   "verdict": "rogue one",
   "landing_pages": [
