@@ -1,5 +1,6 @@
 # Rogue one: a rogue DNS detector
 
+[![Gem Version](https://badge.fury.io/rb/rogue_one.svg)](https://badge.fury.io/rb/rogue_one)
 [![Build Status](https://travis-ci.org/ninoseki/rogue_one.svg?branch=master)](https://travis-ci.org/ninoseki/rogue_one)
 [![Coverage Status](https://coveralls.io/repos/github/ninoseki/rogue_one/badge.svg?branch=master)](https://coveralls.io/github/ninoseki/rogue_one?branch=master)
 
