@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "yaml"
+require "parallel"
 
 module RogueOne
   class Detector
@@ -10,7 +11,7 @@ module RogueOne
 
     def initialize(target:)
       @target = target
-      @memo = Hash.new(0)
+      @memo = {}
     end
 
     def report
@@ -38,14 +39,14 @@ module RogueOne
     end
 
     def inspect
-      top_100_domains.each do |domain|
+      results = Parallel.map(top_100_domains) do |domain|
         normal_result = normal_resolver.dig(domain, "A")
         target_result = target_resolver.dig(domain, "A")
 
-        if normal_result != target_result
-          @memo[target_result] += 1 if target_result
-        end
-      end
+        target_result if target_result && normal_result != target_result
+      end.compact
+
+      @memo = results.group_by(&:itself).map { |k, v| [k, v.length] }.to_h
     end
 
     def top_100_domains
