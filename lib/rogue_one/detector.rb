@@ -15,11 +15,9 @@ module RogueOne
     end
 
     def report
-      @report ||= [].tap do |out|
-        inspect
+      inspect
 
-        out << { verdict: verdict, landing_pages: landing_pages }
-      end.first
+      { verdict: verdict, landing_pages: landing_pages }
     end
 
     private
@@ -35,10 +33,12 @@ module RogueOne
     def landing_pages
       @memo.map do |ip, count|
         count > 10 ? ip : nil
-      end.compact
+      end.compact.sort
     end
 
     def inspect
+      return unless @memo.empty?
+
       results = Parallel.map(top_100_domains) do |domain|
         normal_result = normal_resolver.dig(domain, "A")
         target_result = target_resolver.dig(domain, "A")

@@ -18,5 +18,18 @@ RSpec.describe RogueOne::Detector do
     it do
       expect(report.dig(:landing_pages)).to eq([])
     end
+
+    context "with landing pages" do
+      let(:memo) { { "9.9.9.9" => 11, "8.8.8.8" => 11, "1.1.1.1" => 11 } }
+
+      before do
+        subject.instance_variable_set("@memo", memo)
+      end
+
+      it do
+        report = subject.report
+        expect(report.dig(:landing_pages)).to eq(memo.keys.sort)
+      end
+    end
   end
 end
