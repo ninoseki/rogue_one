@@ -20,6 +20,8 @@ module RogueOne
 
     def _resolver
       @_resolver ||= Resolv::DNS.new(nameserver: [nameserver])
+      @_resolver.timeouts = 5
+      @_resolver
     end
 
     def resource_by_type(type)
