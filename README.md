@@ -1,8 +1,20 @@
-# Rogue one: a rogue DNS detector
+# Rogue one
 
 [![Gem Version](https://badge.fury.io/rb/rogue_one.svg)](https://badge.fury.io/rb/rogue_one)
 [![Build Status](https://travis-ci.org/ninoseki/rogue_one.svg?branch=master)](https://travis-ci.org/ninoseki/rogue_one)
 [![Coverage Status](https://coveralls.io/repos/github/ninoseki/rogue_one/badge.svg?branch=master)](https://coveralls.io/github/ninoseki/rogue_one?branch=master)
+
+A tiny tool for detecting a rogue DNS server and extracting landing pages from the rogue DNS server.
+
+## How it works
+
+![image](./images/eyecatch.png)
+
+IPv4 space is vast. But an attacker could secure a few numbers of IP addresses for landing pages.
+It means you can (probably) find malicious landing pages by using the following methods.
+
+- Resolving a bunch of domains by using a rogue DNS.
+- Finding frequent IPv4s from the resolutions. They might be landing pages.
 
 ## Installation
 
