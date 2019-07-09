@@ -2,6 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/rogue_one.svg)](https://badge.fury.io/rb/rogue_one)
 [![Build Status](https://travis-ci.org/ninoseki/rogue_one.svg?branch=master)](https://travis-ci.org/ninoseki/rogue_one)
+[![CodeFactor](https://www.codefactor.io/repository/github/ninoseki/rogue_one/badge)](https://www.codefactor.io/repository/github/ninoseki/rogue_one)
 [![Coverage Status](https://coveralls.io/repos/github/ninoseki/rogue_one/badge.svg?branch=master)](https://coveralls.io/github/ninoseki/rogue_one?branch=master)
 
 A tiny tool for detecting a rogue DNS server and extracting landing pages from the rogue DNS server.
@@ -50,7 +51,7 @@ $ rogue_one report 1.53.252.215
 ```
 
 | Key           | Desc.                                            |
-|---------------|--------------------------------------------------|
+| ------------- | ------------------------------------------------ |
 | verdict       | A detection result (`rogue one` or `benign one`) |
 | landing_pages | An array of IP of landing pages                  |
 
