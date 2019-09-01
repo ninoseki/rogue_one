@@ -30,5 +30,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.8"
 
   spec.add_dependency "parallel", "~> 1.17"
-  spec.add_dependency "thor", "~> 0.19"
+  spec.add_dependency "thor", "~> 0.20"
 end
