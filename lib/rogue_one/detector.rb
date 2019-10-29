@@ -6,11 +6,13 @@ require "parallel"
 module RogueOne
   class Detector
     attr_reader :target
+    attr_reader :custom_list
 
     GOOGLE_PUBLIC_DNS = "8.8.8.8"
 
-    def initialize(target:)
+    def initialize(target:, custom_list: nil)
       @target = target
+      @custom_list = custom_list
       @memo = {}
     end
 
@@ -39,7 +41,8 @@ module RogueOne
     def inspect
       return unless @memo.empty?
 
-      results = Parallel.map(top_100_domains) do |domain|
+      domains = custom_domains || top_100_domains
+      results = Parallel.map(domains) do |domain|
         normal_result = normal_resolver.dig(domain, "A")
         target_result = target_resolver.dig(domain, "A")
 
@@ -49,8 +52,17 @@ module RogueOne
       @memo = results.group_by(&:itself).map { |k, v| [k, v.length] }.to_h
     end
 
+    def custom_domains
+      read_domains custom_list
+    end
+
     def top_100_domains
-      @top_100_domains ||= YAML.safe_load(File.read(File.expand_path("./data/top_100.yml", __dir__)))
+      read_domains DomainList.new(File.expand_path("./data/top_100.yml", __dir__))
+    end
+
+    def read_domains(path)
+      list = DomainList.new(path)
+      list.valid? ? list.domains : []
     end
 
     def normal_resolver
