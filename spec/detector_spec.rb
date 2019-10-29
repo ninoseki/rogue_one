@@ -31,5 +31,14 @@ RSpec.describe RogueOne::Detector do
         expect(report.dig(:landing_pages)).to eq(memo.keys.sort)
       end
     end
+
+    context "when given --verbose option" do
+      subject { described_class.new(target: "1.1.1.1", verbose: true) }
+
+      it do
+        report = subject.report
+        expect(report.dig(:results)).to be_a(Hash)
+      end
+    end
   end
 end
