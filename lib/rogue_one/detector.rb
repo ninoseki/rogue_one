@@ -32,16 +32,19 @@ module RogueOne
       !landing_pages.empty?
     end
 
+    def threshold
+      @threshold ||= (domains.length.to_f / 10.0).ceil
+    end
+
     def landing_pages
       @memo.map do |ip, count|
-        count > 10 ? ip : nil
+        count > threshold ? ip : nil
       end.compact.sort
     end
 
     def inspect
       return unless @memo.empty?
 
-      domains = custom_domains || top_100_domains
       results = Parallel.map(domains) do |domain|
         normal_result = normal_resolver.dig(domain, "A")
         target_result = target_resolver.dig(domain, "A")
@@ -50,6 +53,10 @@ module RogueOne
       end.compact
 
       @memo = results.group_by(&:itself).map { |k, v| [k, v.length] }.to_h
+    end
+
+    def domains
+      @domains ||= custom_domains || top_100_domains
     end
 
     def custom_domains
