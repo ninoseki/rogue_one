@@ -57,12 +57,12 @@ module RogueOne
     end
 
     def top_100_domains
-      read_domains DomainList.new(File.expand_path("./data/top_100.yml", __dir__))
+      read_domains File.expand_path("./data/top_100.yml", __dir__)
     end
 
     def read_domains(path)
       list = DomainList.new(path)
-      list.valid? ? list.domains : []
+      list.valid? ? list.domains : nil
     end
 
     def normal_resolver
