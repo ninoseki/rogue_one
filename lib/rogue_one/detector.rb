@@ -7,19 +7,23 @@ module RogueOne
   class Detector
     attr_reader :target
     attr_reader :custom_list
+    attr_reader :verbose
 
     GOOGLE_PUBLIC_DNS = "8.8.8.8"
 
-    def initialize(target:, custom_list: nil)
+    def initialize(target:, custom_list: nil, verbose: false)
       @target = target
       @custom_list = custom_list
+      @verbose = verbose
+
       @memo = {}
+      @verbose_memo = nil
     end
 
     def report
       inspect
 
-      { verdict: verdict, landing_pages: landing_pages }
+      { verdict: verdict, landing_pages: landing_pages, results: results }.compact
     end
 
     private
@@ -42,6 +46,10 @@ module RogueOne
       end.compact.sort
     end
 
+    def results
+      @verbose_memo
+    end
+
     def inspect
       return unless @memo.empty?
 
@@ -49,10 +57,11 @@ module RogueOne
         normal_result = normal_resolver.dig(domain, "A")
         target_result = target_resolver.dig(domain, "A")
 
-        target_result if target_result && normal_result != target_result
-      end.compact
+        [domain, target_result] if target_result && normal_result != target_result
+      end.compact.to_h
 
-      @memo = results.group_by(&:itself).map { |k, v| [k, v.length] }.to_h
+      @memo = results.values.group_by(&:itself).map { |k, v| [k, v.length] }.to_h
+      @verbose_memo = results if verbose
     end
 
     def domains
