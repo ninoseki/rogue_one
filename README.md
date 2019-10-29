@@ -31,6 +31,16 @@ Commands:
   rogue_one help [COMMAND]       # Describe available commands or one specific command
   rogue_one report [DNS_SERVER]  # Show a report of a given DNS server
 
+$ rogue_one help report
+Usage:
+  rogue_one report [DNS_SERVER]
+
+Options:
+  [--custom-list=CUSTOM_LIST]  # A path to a custom list of domains
+  [--verbose], [--no-verbose]
+
+Show a report of a given DNS server
+
 $ rogue_one report 1.1.1.1
 {
   "verdict": "benign one",
@@ -48,12 +58,23 @@ $ rogue_one report 1.53.252.215
     "61.230.102.66"
   ]
 }
+
+$ rogue_one report 171.244.3.111 --custom-list tmp/roaming.yml
+{
+  "verdict": "rogue one",
+  "landing_pages": [
+    "154.223.53.53",
+    "58.82.243.9"
+  ]
+}
+# Note: a custom list should be an array of domains in YAML format.
 ```
 
-| Key           | Desc.                                            |
-| ------------- | ------------------------------------------------ |
-| verdict       | A detection result (`rogue one` or `benign one`) |
-| landing_pages | An array of IP of landing pages                  |
+| Key           | Desc.                                                                    |
+|---------------|--------------------------------------------------------------------------|
+| verdict       | A detection result (`rogue one` or `benign one`)                         |
+| landing_pages | An array of IP of landing pages                                          |
+| results       | DNS resolution results (only available if --verbose option is specified) |
 
 ## Notes
 
