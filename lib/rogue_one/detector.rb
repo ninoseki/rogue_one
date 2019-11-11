@@ -48,7 +48,20 @@ module RogueOne
     end
 
     def results
-      @verbose_memo
+      return nil unless verbose
+
+      {
+        resolutions: resolutions,
+        occurrences: occurrences
+      }
+    end
+
+    def resolutions
+      (@verbose_memo || {}).sort_by { |_, v| v }.to_h
+    end
+
+    def occurrences
+      @memo.sort_by{ |_, v| -v }.to_h
     end
 
     def inspect
