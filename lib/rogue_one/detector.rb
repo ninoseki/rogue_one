@@ -11,9 +11,10 @@ module RogueOne
 
     GOOGLE_PUBLIC_DNS = "8.8.8.8"
 
-    def initialize(target:, custom_list: nil, verbose: false)
+    def initialize(target:, custom_list: nil, threshold: nil, verbose: false)
       @target = target
       @custom_list = custom_list
+      @threshold = threshold
       @verbose = verbose
 
       @memo = {}

@@ -37,6 +37,7 @@ Usage:
 
 Options:
   [--custom-list=CUSTOM_LIST]  # A path to a custom list of domains
+  [--threshold=N]              # Threshold value for determining malicious or not
   [--verbose], [--no-verbose]
 
 Show a report of a given DNS server
