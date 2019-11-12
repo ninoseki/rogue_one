@@ -24,7 +24,12 @@ module RogueOne
     def report
       inspect
 
-      { verdict: verdict, landing_pages: landing_pages, results: results }.compact
+      {
+        verdict: verdict,
+        landing_pages: landing_pages,
+        results: results,
+        meta: meta
+      }.compact
     end
 
     private
@@ -39,6 +44,12 @@ module RogueOne
 
     def threshold
       @threshold ||= (domains.length.to_f / 10.0).ceil
+    end
+
+    def meta
+      return nil unless verbose
+
+      { threshold: threshold }
     end
 
     def landing_pages
