@@ -9,7 +9,7 @@ module RogueOne
     end
 
     def pong?
-      result = resolver.dig("example.com", "A")
+      result = resolver.get_resource("example.com", "A")
       raise Error, "DNS resolve error: there is no resopnse from #{resolver.nameserver}" unless result
 
       true

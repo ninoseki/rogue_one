@@ -68,10 +68,10 @@ module RogueOne
       return unless @memo.empty?
 
       results = Parallel.map(domains) do |domain|
-        normal_result = normal_resolver.dig(domain, "A")
-        target_result = target_resolver.dig(domain, "A")
+        normal_results = normal_resolver.get_resources(domain, "A")
+        target_result = target_resolver.get_resource(domain, "A")
 
-        [domain, target_result] if target_result && normal_result != target_result
+        [domain, target_result] if target_result && !normal_results.include?(target_result)
       end.compact.to_h
 
       @memo = results.values.group_by(&:itself).map { |k, v| [k, v.length] }.to_h

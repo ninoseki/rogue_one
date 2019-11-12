@@ -10,9 +10,15 @@ module RogueOne
       @nameserver = nameserver
     end
 
-    def dig(domain, type)
+    def get_resource(domain, type)
       _resolver.getresource(domain, resource_by_type(type)).address.to_s
-    rescue Resolv::ResolvError => e
+    rescue Resolv::ResolvError => _e
+      nil
+    end
+
+    def get_resources(domain, type)
+      _resolver.getresources(domain, resource_by_type(type)).map { |r| r.address.to_s }
+    rescue Resolv::ResolvError => _e
       nil
     end
 
