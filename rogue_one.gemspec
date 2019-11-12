@@ -10,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Manabu Niseki"]
   spec.email         = ["manabu.niseki@gmail.com"]
 
-  spec.summary       = "Rogue one: a rogue DNS detector"
-  spec.description   = 'Rogue one: a rogue DNS detector'
+  spec.summary       = "A rogue DNS detector"
+  spec.description   = "A rogue DNS detector"
   spec.homepage      = "https://github.com/ninoseki/rogue_one"
   spec.license       = "MIT"
 

@@ -5,7 +5,9 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/ninoseki/rogue_one/badge)](https://www.codefactor.io/repository/github/ninoseki/rogue_one)
 [![Coverage Status](https://coveralls.io/repos/github/ninoseki/rogue_one/badge.svg?branch=master)](https://coveralls.io/github/ninoseki/rogue_one?branch=master)
 
-A tiny tool for detecting a rogue DNS server and extracting landing pages from the rogue DNS server.
+A PoC tool for analyzing a rogue DNS server.
+
+This tool could be used for checking maliciousness of a DNS server and extracting landing pages.
 
 ## How it works
 
@@ -14,8 +16,9 @@ A tiny tool for detecting a rogue DNS server and extracting landing pages from t
 IPv4 space is vast. But an attacker could secure a few numbers of IP addresses for landing pages.
 It means you can (probably) find malicious landing pages by using the following methods.
 
-- Resolving a bunch of domains by using a rogue DNS.
+- Resolving a bunch of domains by using a DNS server.
 - Finding frequent IPv4s from the resolutions. They might be landing pages.
+- If a DNS server has landing pages, it might be a rogue one.
 
 ## Installation
 
@@ -72,7 +75,7 @@ $ rogue_one report 171.244.3.111 --custom-list tmp/roaming.yml
 ```
 
 | Key           | Desc.                                                                    |
-|---------------|--------------------------------------------------------------------------|
+| ------------- | ------------------------------------------------------------------------ |
 | verdict       | A detection result (`rogue one` or `benign one`)                         |
 | landing_pages | An array of IP of landing pages                                          |
 | results       | DNS resolution results (only available if --verbose option is specified) |
