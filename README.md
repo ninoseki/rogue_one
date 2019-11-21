@@ -39,9 +39,13 @@ Usage:
   rogue_one report [DNS_SERVER]
 
 Options:
-  [--custom-list=CUSTOM_LIST]  # A path to a custom list of domains
-  [--threshold=N]              # Threshold value for determining malicious or not
+  [--default-list=DEFAULT_LIST]  # A default list of top 100 domains (Alexa or Fortune)
+                                 # Default: alexa
+  [--custom-list=CUSTOM_LIST]    # A path to a custom list of domains
+  [--threshold=N]                # Threshold value for determining malicious or not
   [--verbose], [--no-verbose]
+
+Show a report of a given DNS server
 
 Show a report of a given DNS server
 
