@@ -11,7 +11,7 @@ RSpec.describe RogueOne::DomainList do
     end
 
     context "when given a valid path" do
-      subject { described_class.new File.expand_path("../lib/rogue_one/data/top_100.yml", __dir__) }
+      subject { described_class.new File.expand_path("../lib/rogue_one/data/alexa_100.yml", __dir__) }
 
       it do
         expect(subject.valid?).to eq(true)
@@ -29,7 +29,7 @@ RSpec.describe RogueOne::DomainList do
     end
 
     context "when given a valid path" do
-      subject { described_class.new File.expand_path("../lib/rogue_one/data/top_100.yml", __dir__) }
+      subject { described_class.new File.expand_path("../lib/rogue_one/data/alexa_100.yml", __dir__) }
 
       it do
         expect(subject.domains).to be_an(Array)
