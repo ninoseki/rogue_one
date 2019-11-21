@@ -6,13 +6,15 @@ require "parallel"
 module RogueOne
   class Detector
     attr_reader :target
+    attr_reader :default_list
     attr_reader :custom_list
     attr_reader :verbose
 
     GOOGLE_PUBLIC_DNS = "8.8.8.8"
 
-    def initialize(target:, custom_list: nil, threshold: nil, verbose: false)
+    def initialize(target:, default_list:, custom_list: nil, threshold: nil, verbose: false)
       @target = target
+      @default_list = default_list
       @custom_list = custom_list
       @threshold = threshold
       @verbose = verbose
@@ -98,7 +100,14 @@ module RogueOne
     end
 
     def top_100_domains
-      read_domains File.expand_path("./data/top_100.yml", __dir__)
+      case default_list
+      when "alexa"
+        read_domains File.expand_path("./data/alexa_100.yml", __dir__)
+      when "fortune"
+        read_domains File.expand_path("./data/fortune_100.yml", __dir__)
+      else
+        raise ArgumentError, "A list for #{default_list} is not existing"
+      end
     end
 
     def read_domains(path)
