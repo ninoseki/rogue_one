@@ -40,5 +40,13 @@ RSpec.describe RogueOne::Detector do
         expect(report.dig(:results)).to be_a(Hash)
       end
     end
+
+    context "when given an invalid --custom-list" do
+      subject { described_class.new(target: "1.1.1.1", custom_list: "/tmp/foobar") }
+
+      it do
+        expect { subject.report }.to raise_error(ArgumentError)
+      end
+    end
   end
 end
