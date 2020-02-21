@@ -92,7 +92,7 @@ module RogueOne
     end
 
     def domains
-      @domains ||= custom_domains || top_100_domains
+      @domains ||= custom_list ? custom_domains : top_100_domains
     end
 
     def custom_domains
@@ -105,14 +105,15 @@ module RogueOne
         read_domains File.expand_path("./data/alexa_100.yml", __dir__)
       when "fortune"
         read_domains File.expand_path("./data/fortune_100.yml", __dir__)
-      else
-        raise ArgumentError, "A list for #{default_list} is not existing"
       end
     end
 
     def read_domains(path)
       list = DomainList.new(path)
-      list.valid? ? list.domains : nil
+      return list.domains if list.valid?
+
+      raise ArgumentError, "Inputted an invalid list. #{path} is not eixst." unless list.exists?
+      raise ArgumentError, "Inputted an invalid list. Please input a list as an YAML file." unless list.valid_format?
     end
 
     def normal_resolver

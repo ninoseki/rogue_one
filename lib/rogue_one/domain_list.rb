@@ -18,8 +18,6 @@ module RogueOne
       @domains ||= exists? ? YAML.safe_load(File.read(path)) : nil
     end
 
-    private
-
     def exists?
       File.exist?(path)
     end
