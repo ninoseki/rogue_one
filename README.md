@@ -1,7 +1,7 @@
 # Rogue one
 
 [![Gem Version](https://badge.fury.io/rb/rogue_one.svg)](https://badge.fury.io/rb/rogue_one)
-[![Build Status](https://travis-ci.org/ninoseki/rogue_one.svg?branch=master)](https://travis-ci.org/ninoseki/rogue_one)
+[![Build Status](https://travis-ci.com/ninoseki/rogue_one.svg?branch=master)](https://travis-ci.com/ninoseki/rogue_one)
 [![CodeFactor](https://www.codefactor.io/repository/github/ninoseki/rogue_one/badge)](https://www.codefactor.io/repository/github/ninoseki/rogue_one)
 [![Coverage Status](https://coveralls.io/repos/github/ninoseki/rogue_one/badge.svg?branch=master)](https://coveralls.io/github/ninoseki/rogue_one?branch=master)
 
@@ -79,7 +79,7 @@ $ rogue_one report 171.244.3.111 --custom-list tmp/roaming.yml
 ```
 
 | Key           | Desc.                                                                    |
-| ------------- | ------------------------------------------------------------------------ |
+|---------------|--------------------------------------------------------------------------|
 | verdict       | A detection result (`rogue one` or `benign one`)                         |
 | landing_pages | An array of IP of landing pages                                          |
 | results       | DNS resolution results (only available if --verbose option is specified) |
