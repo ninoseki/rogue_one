@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 
+require "async"
+require "async/barrier"
+require "async/dns"
+require "async/reactor"
+require "async/semaphore"
+require "resolv"
 require "yaml"
-require "parallel"
+require "etc"
 
 module RogueOne
   class Detector
@@ -9,6 +15,7 @@ module RogueOne
     attr_reader :default_list
     attr_reader :custom_list
     attr_reader :verbose
+    attr_reader :max_concurrency
 
     GOOGLE_PUBLIC_DNS = "8.8.8.8"
 
@@ -19,6 +26,7 @@ module RogueOne
       @threshold = threshold
       @verbose = verbose
 
+      @max_concurrency = Etc.nprocessors * 2
       @memo = {}
       @verbose_memo = nil
     end
@@ -80,11 +88,16 @@ module RogueOne
     def inspect
       return unless @memo.empty?
 
-      results = Parallel.map(domains) do |domain|
-        normal_results = normal_resolver.get_resources(domain, "A")
-        target_result = target_resolver.get_resource(domain, "A")
+      # read domains outside of the async blocks
+      domains
 
-        [domain, target_result] if target_result && !normal_results.include?(target_result)
+      normal = bulk_resolve(normal_resolver, domains)
+      resolutions = bulk_resolve(target_resolver, domains)
+
+      results = resolutions.map do |domain, addresses|
+        normal_addresses = normal.dig(domain) || []
+        address = (addresses || []).first
+        [domain, address] if address && !normal_addresses.include?(address)
       end.compact.to_h
 
       @memo = results.values.group_by(&:itself).map { |k, v| [k, v.length] }.to_h
@@ -116,12 +129,37 @@ module RogueOne
       raise ArgumentError, "Inputted an invalid list. Please input a list as an YAML file." unless list.valid_format?
     end
 
+    def bulk_resolve(resolver, domains)
+      results = []
+      Async do
+        barrier = Async::Barrier.new
+        semaphore = Async::Semaphore.new(max_concurrency, parent: barrier)
+
+        domains.each do |domain|
+          semaphore.async do
+            records = resolver.query(domain, Resolv::DNS::Resource::IN::A).answer.flatten
+
+            a_records = records.select do |record|
+              record.is_a? Resolv::DNS::Resource::IN::A
+            end
+
+            addresses = a_records.map do |record|
+              record.respond_to?(:address) ? record.address.to_s : nil
+            end.compact
+
+            results << [domain, addresses]
+          end
+        end
+      end
+      results.to_h.compact
+    end
+
     def normal_resolver
-      @normal_resolver ||= Resolver.new(nameserver: GOOGLE_PUBLIC_DNS)
+      Async::DNS::Resolver.new([[:udp, GOOGLE_PUBLIC_DNS, 53], [:tcp, GOOGLE_PUBLIC_DNS, 53]])
     end
 
     def target_resolver
-      @target_resolver ||= Resolver.new(nameserver: target)
+      Async::DNS::Resolver.new([[:udp, target, 53], [:tcp, target, 53]])
     end
   end
 end
