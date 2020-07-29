@@ -137,21 +137,17 @@ module RogueOne
 
         domains.each do |domain|
           semaphore.async do
-            records = resolver.query(domain, Resolv::DNS::Resource::IN::A).answer.flatten
-
-            a_records = records.select do |record|
-              record.is_a? Resolv::DNS::Resource::IN::A
+            addresses = []
+            begin
+              addresses = resolver.addresses_for(domain, Resolv::DNS::Resource::IN::A, { retries: 1 }).map(&:to_s)
+            rescue Async::DNS::ResolutionFailure
+              # do nothing
             end
-
-            addresses = a_records.map do |record|
-              record.respond_to?(:address) ? record.address.to_s : nil
-            end.compact
-
             results << [domain, addresses]
           end
         end
       end
-      results.to_h.compact
+      results.to_h
     end
 
     def normal_resolver
