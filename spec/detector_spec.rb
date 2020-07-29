@@ -6,7 +6,6 @@ RSpec.describe RogueOne::Detector do
   describe "#report" do
     before do
       allow(subject).to receive(:top_100_domains).and_return(%w(google.com))
-      allow(Parallel).to receive(:processor_count).and_return(0)
     end
 
     let(:report) { subject.report }

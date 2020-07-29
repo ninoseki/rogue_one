@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.9"
 
+  spec.add_dependency "async-dns", "~> 1.2"
   spec.add_dependency "parallel", "~> 1.19"
   spec.add_dependency "thor", "~> 1.0"
 end
