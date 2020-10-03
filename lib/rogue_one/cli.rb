@@ -5,6 +5,12 @@ require "json"
 
 module RogueOne
   class CLI < Thor
+    class << self
+      def exit_on_failure?
+        true
+      end
+    end
+
     desc "report [DNS_SERVER]", "Show a report of a given DNS server"
     method_option :default_list, type: :string, default: "alexa", desc: "A default list of top 100 domains (Alexa or Fortune)"
     method_option :custom_list, type: :string, desc: "A path to a custom list of domains"
