@@ -89,19 +89,23 @@ module RogueOne
       return unless @memo.empty?
 
       # read domains outside of the async blocks
-      domains
+      load_domains
 
-      normal = bulk_resolve(normal_resolver, domains)
+      normal_resolutions = bulk_resolve(normal_resolver, domains)
       resolutions = bulk_resolve(target_resolver, domains)
 
       results = resolutions.map do |domain, addresses|
-        normal_addresses = normal.dig(domain) || []
+        normal_addresses = normal_resolutions.dig(domain) || []
         address = (addresses || []).first
         [domain, address] if address && !normal_addresses.include?(address)
       end.compact.to_h
 
       @memo = results.values.group_by(&:itself).map { |k, v| [k, v.length] }.to_h
       @verbose_memo = results if verbose
+    end
+
+    def load_domains
+      domains
     end
 
     def domains
