@@ -40,4 +40,10 @@ RSpec.describe RogueOne::CLI do
       end
     end
   end
+
+  describe ".exit_on_failure?" do
+    it do
+      expect(described_class.exit_on_failure?).to eq(true)
+    end
+  end
 end
