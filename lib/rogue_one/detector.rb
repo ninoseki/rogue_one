@@ -11,18 +11,26 @@ require "etc"
 
 module RogueOne
   class Detector
-    attr_reader :target
-    attr_reader :default_list
     attr_reader :custom_list
-    attr_reader :verbose
+    attr_reader :default_list
     attr_reader :max_concurrency
+    attr_reader :record_type
+    attr_reader :target
+    attr_reader :verbose
 
     GOOGLE_PUBLIC_DNS = "8.8.8.8"
 
-    def initialize(target:, default_list: "alexa", custom_list: nil, threshold: nil, verbose: false)
+    def initialize(target:,
+                   custom_list: nil,
+                   default_list: "alexa",
+                   record_type: "A",
+                   threshold: nil,
+                   verbose: false)
       @target = target
-      @default_list = default_list
+
       @custom_list = custom_list
+      @default_list = default_list
+      @record_type = record_type.upcase.to_sym
       @threshold = threshold
       @verbose = verbose
 
@@ -59,7 +67,10 @@ module RogueOne
     def meta
       return nil unless verbose
 
-      { threshold: threshold }
+      {
+        record_type: record_type,
+        threshold: threshold,
+      }
     end
 
     def landing_pages
@@ -135,6 +146,7 @@ module RogueOne
 
     def bulk_resolve(resolver, domains)
       results = []
+
       Async do
         barrier = Async::Barrier.new
         semaphore = Async::Semaphore.new(max_concurrency, parent: barrier)
@@ -143,7 +155,7 @@ module RogueOne
           semaphore.async do
             addresses = []
             begin
-              addresses = resolver.addresses_for(domain, Resolv::DNS::Resource::IN::A, { retries: 1 }).map(&:to_s)
+              addresses = resolver.addresses_for(domain, dns_resource_by_record_type, { retries: 1 }).map(&:to_s)
             rescue Async::DNS::ResolutionFailure
               # do nothing
             end
@@ -160,6 +172,17 @@ module RogueOne
 
     def target_resolver
       Async::DNS::Resolver.new([[:udp, target, 53], [:tcp, target, 53]])
+    end
+
+    def dns_resource_by_record_type
+      @dns_resource_by_record_type ||= dns_resources.dig(record_type)
+    end
+
+    def dns_resources
+      {
+        A: Resolv::DNS::Resource::IN::A,
+        AAAA: Resolv::DNS::Resource::IN::AAAA,
+      }
     end
   end
 end
