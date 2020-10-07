@@ -4,7 +4,6 @@ require "rogue_one/version"
 
 require "rogue_one/domain_list"
 
-require "rogue_one/resolver"
 require "rogue_one/detector"
 require "rogue_one/ping"
 require "rogue_one/cli"
