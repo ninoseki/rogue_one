@@ -1,7 +1,7 @@
 # Rogue one
 
 [![Gem Version](https://badge.fury.io/rb/rogue_one.svg)](https://badge.fury.io/rb/rogue_one)
-[![Build Status](https://travis-ci.com/ninoseki/rogue_one.svg?branch=master)](https://travis-ci.com/ninoseki/rogue_one)
+[![Ruby CI](https://github.com/ninoseki/rogue_one/actions/workflows/test.yaml/badge.svg)](https://github.com/ninoseki/rogue_one/actions/workflows/test.yaml)
 [![CodeFactor](https://www.codefactor.io/repository/github/ninoseki/rogue_one/badge)](https://www.codefactor.io/repository/github/ninoseki/rogue_one)
 [![Coverage Status](https://coveralls.io/repos/github/ninoseki/rogue_one/badge.svg?branch=master)](https://coveralls.io/github/ninoseki/rogue_one?branch=master)
 
@@ -75,7 +75,7 @@ $ rogue_one report 171.244.3.111 --custom-list tmp/roaming.yml
     "58.82.243.9"
   ]
 }
-# Note: a custom list should be an array of domains in YAML format.
+# Note: a custom list should be an array of domains in a YAML file.
 ```
 
 | Key           | Desc.                                                                    |
