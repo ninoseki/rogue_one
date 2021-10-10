@@ -4,8 +4,7 @@ require "resolv"
 
 module RogueOne
   class Ping
-    attr_reader :resolver
-    attr_reader :nameserver
+    attr_reader :resolver, :nameserver
 
     def initialize(nameserver)
       @nameserver = nameserver
