@@ -38,6 +38,7 @@ module RogueOne
         puts JSON.pretty_generate(detector.report)
       end
     end
+    default_command :report
 
     no_commands do
       def with_error_handling

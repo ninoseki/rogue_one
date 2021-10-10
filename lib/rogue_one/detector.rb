@@ -137,8 +137,8 @@ module RogueOne
       list = DomainList.new(path)
       return list.domains if list.valid?
 
-      raise ArgumentError, "Inputted an invalid list. #{path} is not eixst." unless list.exists?
-      raise ArgumentError, "Inputted an invalid list. Please input a list as an YAML file." unless list.valid_format?
+      raise ArgumentError, "Inputted an invalid list. #{path} does not eixst." unless list.exists?
+      raise ArgumentError, "Inputted an invalid list. Please input a list via a YAML file." unless list.valid_format?
     end
 
     def bulk_resolve(resolver, domains)
