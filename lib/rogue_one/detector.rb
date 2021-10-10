@@ -11,21 +11,18 @@ require "etc"
 
 module RogueOne
   class Detector
-    attr_reader :custom_list
-    attr_reader :default_list
-    attr_reader :max_concurrency
-    attr_reader :record_type
-    attr_reader :target
-    attr_reader :verbose
+    attr_reader :custom_list, :default_list, :max_concurrency, :record_type, :target, :verbose
 
     GOOGLE_PUBLIC_DNS = "8.8.8.8"
 
-    def initialize(target:,
-                   custom_list: nil,
-                   default_list: "alexa",
-                   record_type: "A",
-                   threshold: nil,
-                   verbose: false)
+    def initialize(
+      target:,
+      custom_list: nil,
+      default_list: "alexa",
+      record_type: "A",
+      threshold: nil,
+      verbose: false
+    )
       @target = target
 
       @custom_list = custom_list
@@ -74,9 +71,9 @@ module RogueOne
     end
 
     def landing_pages
-      @memo.map do |ip, count|
+      @memo.filter_map do |ip, count|
         count > threshold ? ip : nil
-      end.compact.sort
+      end.sort
     end
 
     def results
@@ -105,13 +102,13 @@ module RogueOne
       normal_resolutions = bulk_resolve(normal_resolver, domains)
       resolutions = bulk_resolve(target_resolver, domains)
 
-      results = resolutions.map do |domain, addresses|
-        normal_addresses = normal_resolutions.dig(domain) || []
+      results = resolutions.filter_map do |domain, addresses|
+        normal_addresses = normal_resolutions[domain] || []
         address = (addresses || []).first
         [domain, address] if address && !normal_addresses.include?(address)
-      end.compact.to_h
+      end.to_h
 
-      @memo = results.values.group_by(&:itself).map { |k, v| [k, v.length] }.to_h
+      @memo = results.values.group_by(&:itself).transform_values(&:length)
       @verbose_memo = results if verbose
     end
 
@@ -175,7 +172,7 @@ module RogueOne
     end
 
     def dns_resource_by_record_type
-      @dns_resource_by_record_type ||= dns_resources.dig(record_type)
+      @dns_resource_by_record_type ||= dns_resources[record_type]
     end
 
     def dns_resources

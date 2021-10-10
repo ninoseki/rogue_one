@@ -11,11 +11,11 @@ RSpec.describe RogueOne::Detector do
     let(:report) { subject.report }
 
     it do
-      expect(report.dig(:verdict)).to eq("benign one")
+      expect(report[:verdict]).to eq("benign one")
     end
 
     it do
-      expect(report.dig(:landing_pages)).to eq([])
+      expect(report[:landing_pages]).to eq([])
     end
 
     context "with landing pages" do
@@ -27,7 +27,7 @@ RSpec.describe RogueOne::Detector do
 
       it do
         report = subject.report
-        expect(report.dig(:landing_pages)).to eq(memo.keys.sort)
+        expect(report[:landing_pages]).to eq(memo.keys.sort)
       end
     end
 
@@ -36,7 +36,7 @@ RSpec.describe RogueOne::Detector do
 
       it do
         report = subject.report
-        expect(report.dig(:results)).to be_a(Hash)
+        expect(report[:results]).to be_a(Hash)
       end
     end
 
