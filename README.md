@@ -20,6 +20,10 @@ It means you can (probably) find malicious landing pages by using the following 
 - Finding frequent IPv4s from the resolutions. They might be landing pages.
 - If a DNS server has landing pages, it might be a rogue one.
 
+## Requirements
+
+- Ruby 3.x / Ruby 2.7+
+
 ## Installation
 
 ```bash
