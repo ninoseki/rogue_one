@@ -5,4 +5,6 @@ $LOAD_PATH.unshift("#{__dir__}/../lib")
 
 require "rogue_one"
 
-RogueOne::CLI.start
+ARGV.unshift(RogueOne::CLI.default_task) unless RogueOne::CLI.all_tasks.key?(ARGV[0])
+
+RogueOne::CLI.start(ARGV)
